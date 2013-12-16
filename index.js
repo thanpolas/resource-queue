@@ -1,52 +1,14 @@
-var resource = require('resource'),
-    queue = resource.define('queue');
+var resource = require('resource');
+
+var queueSchema = require('./queue.mschema');
+
+var queue = resource.define('queue', {
+  schema: queueSchema,
+});
 
 queue.schema.description = "a queue for resource events";
 
 queue.persist('memory');
-
-queue.property('concurrency', {
-  description: 'how many jobs to run at once',
-  type: 'number',
-  default: 1
-});
-
-queue.property('interval', {
-  description: 'time interval between processing items (ms)',
-  type: 'number',
-  default: 5000
-});
-
-queue.property('wait', {
-  description: 'wait until all running jobs are completed before executing next set',
-  type: 'boolean',
-  default: true
-});
-
-queue.property('repeat', {
-  description: 'automatically push completed elements back onto the queue',
-  type: 'boolean',
-  default: false
-});
-
-queue.property('elements', {
-  description: 'the elements currently inside the queue',
-  type: 'array',
-  default: []
-});
-
-queue.property('started', {
-  description: 'whether or not the queue has been started',
-  type: 'boolean',
-  default: false
-});
-
-queue.property('inProgress', {
-  description: 'the elements currently being processed',
-  type: 'array',
-  default: []
-});
-
 
 //
 // Basic push/shift methods for queue
