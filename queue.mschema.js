@@ -49,14 +49,12 @@ module.exports = {
       input: {
         id: { type: 'any' },
         job: {
-          properties: {
-            method: {
-              type: 'string'
-            },
-            with: {
-              type: 'any',
-              default: {}
-            }
+          method: {
+            type: 'string'
+          },
+          with: {
+            type: 'any',
+            default: {}
           }
         },
       }
@@ -73,14 +71,12 @@ module.exports = {
       properties: {
         id: { type: 'any' },
         job: {
-          properties: {
-            method: {
-              type: 'string'
-            },
-            with: {
-              type: 'any',
-              default: {}
-            }
+          method: {
+            type: 'string'
+          },
+          with: {
+            type: 'any',
+            default: {}
           }
         },
       }
@@ -93,9 +89,6 @@ module.exports = {
       description: 'take `queue.concurrency` elements off the queue',
       properties: {
         id: { type: 'any' },
-        callback: {
-          type: 'function',
-        }
       }
     },
 
@@ -122,15 +115,13 @@ module.exports = {
       type: 'object',
       properties: {
         job: {
-          properties: {
-            method: {
-              type: 'string',
-              required: true
-            },
-            with: {
-              type: 'any',
-              default: {}
-            }
+          method: {
+            type: 'string',
+            required: true
+          },
+          with: {
+            type: 'any',
+            default: {}
           }
         },
       }
