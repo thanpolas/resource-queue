@@ -68,7 +68,6 @@ module.exports = {
       }
     },
 
-
     unshift: {
       description: 'unshift an element onto the front of the queue',
       properties: {
@@ -100,7 +99,6 @@ module.exports = {
       }
     },
 
-
     //
     // Lists in python have an analogous method of the same name
     // http://docs.python.org/2/library/stdtypes.html#typesseq-mutable
@@ -114,7 +112,6 @@ module.exports = {
         },
       }
     },
-
 
     //
     // Run a single job by executing the specified method with the specified
@@ -138,7 +135,6 @@ module.exports = {
         },
       }
     },
-
 
     //
     // This method takes q.concurrency elements off the front of the queue and
