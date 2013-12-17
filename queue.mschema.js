@@ -1,4 +1,5 @@
 module.exports = {
+  description: 'a queue for resource events',
   properties: {
     concurrency: {
       description: 'how many jobs to run at once',

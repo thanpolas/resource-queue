@@ -8,8 +8,6 @@ var queue = module.exports = resource.define('queue', {
   schema: queueSchema,
 });
 
-// queue.schema.description = "a queue for resource events";
-
 queue.persist('memory');
 
 process.nextTick(function () {
