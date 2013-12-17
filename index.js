@@ -3,7 +3,7 @@ var resource = require('resource');
 var queueSchema = require('./queue.mschema');
 var queueController = require('./lib');
 
-var queue = resource.define('queue', {
+var queue = module.exports = resource.define('queue', {
   controller: queueController,
   schema: queueSchema,
 });
@@ -20,4 +20,3 @@ process.nextTick(function () {
     });
   }
 });
-exports.queue = queue;
