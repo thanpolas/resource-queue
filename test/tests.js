@@ -1,8 +1,8 @@
-var tap = require('tap'),
-    resource = require('resource'),
-    queue = resource.use('queue'),
-    http = resource.use('http'),
-    request = http.request;
+var tap = require('tap');
+var resource = require('resource');
+var queue = require('../');
+var http = resource.use('http');
+var request = http.request;
 
 var counter = resource.counter = resource.define('counter');
 counter.property('message', {
@@ -91,11 +91,10 @@ tap.test('take multiple elements from the queue', function (t) {
     t.error(err, 'queue.get called successfully');
     _queue.concurrency = 2;
 
-    queue.update(_queue, function (err, _queue) {
+    queue.update(_queue, function (err) {
       t.error(err, 'queue.update called successfully');
-      var elems;
 
-      queue.take(id, function (err, elems, _queue) {
+      queue.take(id, function (err, elems) {
         t.error(err, 'queue.take called successfully');
 
         t.equal(_queue.elements.length, 0, 'queue length is now 0');
@@ -107,7 +106,7 @@ tap.test('take multiple elements from the queue', function (t) {
 
         _queue.concurrency = 1;
 
-        queue.update(_queue, function (err, _queue) {
+        queue.update(_queue, function (err) {
           t.error(err, 'queue.update called successfully');
           t.end();
         });
@@ -139,7 +138,7 @@ tap.test('repopulate the queue', function (t) {
 });
 
 tap.test('start the queue and run for 11 seconds', function (t) {
-  queue.start(id, function (err, _queue) {
+  queue.start(id, function (err) {
     t.error(err, 'queue starts');
     t.end();
   });
@@ -156,6 +155,12 @@ tap.test('stop the queue after 11 seconds', function (t) {
 
 tap.test('queue elements processed as expected', function (t) {
   counter.all(function (err, counts) {
+    function hasMessage(msg) {
+      return counts.some(function (c) {
+        return c.message === msg;
+      });
+    }
+
     t.error(err, 'no error');
 
     t.equal(counts.length, 3, '3 elements were processed by the queue');
@@ -174,11 +179,6 @@ tap.test('queue elements processed as expected', function (t) {
       t.end();
     });
 
-    function hasMessage(msg) {
-      return counts.some(function (c) {
-        return c.message === msg;
-      });
-    }
   });
 });
 
@@ -208,7 +208,7 @@ tap.test('modify the queue while it is running', function (t) {
 
     var els = _queue.elements.slice();
 
-    queue.start(id, function (err, _queue) {
+    queue.start(id, function (err) {
       t.error(err, 'queue starts');
 
       setTimeout(function () {
@@ -230,10 +230,10 @@ tap.test('modify the queue while it is running', function (t) {
             method: 'POST',
             uri: 'http://localhost:5984/big/queue%2Ftest-queue',
             json: body
-          }, function (err, res) {
+          }, function (err) {
             t.error(err, 'no error modifying document');
             setTimeout(function () {
-              queue.stop(id, function (err, _queue) {
+              queue.stop(id, function (err) {
                 t.error(err, 'queue stops');
                 t.end();
               });
@@ -251,27 +251,27 @@ tap.test('push to the queue while it is running', function (t) {
 
     _queue.elements = [];
 
-    queue.update(_queue, function (err, _queue) {
+    queue.update(_queue, function (err) {
       t.error(err, 'no error while updating queue');
 
-      queue.start(id, function (err, _queue) {
+      queue.start(id, function (err) {
         t.error(err, 'queue starts');
 
         setTimeout(function () {
-          resource.queue.get(id, function (err, _queue) {
+          resource.queue.get(id, function (err) {
             t.error(err, 'no error while getting queue');
 
             queue.push(id, {
               method: 'counter::create',
               with: { timestamp: new Date(), message: 'four' }
-            }, function (err, _queue) {
+            }, function (err) {
               t.error(err, 'no error while pushing to queue');
 
               setTimeout(function () {
-                queue.get(id, function (err, _queue) {
+                queue.get(id, function (err) {
                   t.error(err, 'no error while getting queue');
 
-                  queue.stop(id, function (err, _queue) {
+                  queue.stop(id, function (err) {
                     t.error(err, 'queue stops');
                     t.end();
                   });
